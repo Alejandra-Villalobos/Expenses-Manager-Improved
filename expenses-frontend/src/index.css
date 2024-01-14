@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bank-divs {
+    background: linear-gradient(315deg, rgba(252,97,138,1) 0%, rgba(240,30,61,1) 100%);
+}
+
+.bank-divs:nth-child(4n+1){
+    background: linear-gradient(315deg, rgba(150,82,255,1) 0%, rgba(81,0,176,1) 100%); 
+}
+
+.bank-divs:nth-child(4n+2){
+    background: linear-gradient(315deg, rgba(14,162,175,1) 0%, rgba(0,49,134,1) 100%);
+}
+
+.bank-divs:nth-child(4n+3){
+    background: linear-gradient(315deg, rgba(28,242,181,1) 0%, rgba(18,222,112,1) 100%); 
+}

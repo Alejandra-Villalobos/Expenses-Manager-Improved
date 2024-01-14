@@ -16,7 +16,7 @@ module.exports.createBankAccount = ({ account, bank_name, currency, amount, user
     return pool.query(SQL_SELECT_BANKS, bindings);
   };
   
-  module.exports.findByBankId = ({ user_id, bank_id }) => {
+  module.exports.findBankById = ({ user_id, bank_id }) => {
     const bindings = [user_id, bank_id];
     const SQL_SELECT_BANK = `SELECT
                                   BANK_ID, ACCOUNT, BANK_NAME, CURRENCY, AMOUNT, USERNAME
@@ -26,11 +26,14 @@ module.exports.createBankAccount = ({ account, bank_name, currency, amount, user
     return pool.query(SQL_SELECT_BANK, bindings);
   };
 
-  module.exports.fetchAllBanks = () => {
+  module.exports.findAnyBankByAccountAndName = ({ account, bank_name }) => {
+    const bindings = [account, bank_name];
     const SQL_SELECT_BANKS = `SELECT
-                                  BANK_ID, ACCOUNT, BANK_NAME, CURRENCY, AMOUNT, USERNAME, USER_ID
-                                  FROM BANK`;
-    return pool.query(SQL_SELECT_BANKS);
+                                  BANK_ID, ACCOUNT, BANK_NAME, CURRENCY, USER_ID
+                                  FROM BANK
+                                  WHERE ACCOUNT = $1
+                                  AND BANK_NAME = $2`;
+    return pool.query(SQL_SELECT_BANKS, bindings);
   };
   
   module.exports.updateAmount = ({ amount, bank_id }) => {

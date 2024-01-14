@@ -15,17 +15,19 @@ module.exports.createIncome = ({
 
 module.exports.fetchAllIncomes = ({ user_id }) => {
   const bindings = [user_id];
-  const SQL_SELECT_INCOMES = `SELECT INCOME_ID, CATEGORY, DESCRIPTION, AMOUNT, ADD_DATE, BANK_ID
-                                  FROM INCOME
-                                  WHERE USER_ID = $1`;
+  const SQL_SELECT_INCOMES = `SELECT i.INCOME_ID, i.CATEGORY, i.DESCRIPTION, i.AMOUNT, i.ADD_DATE, b.bank_name, b.currency
+                                  FROM INCOME i
+                                  JOIN BANK b ON i.bank_id =b.bank_id 
+                                  WHERE i.USER_ID = $1`;
   return pool.query(SQL_SELECT_INCOMES, bindings);
 };
 
 module.exports.findIncomeById = ({ user_id, income_id }) => {
   const bindings = [user_id, income_id];
-  const SQL_SELECT_INCOME = `SELECT INCOME_ID, CATEGORY, DESCRIPTION, AMOUNT, ADD_DATE, BANK_ID
-                                  FROM INCOME
-                                  WHERE USER_ID = $1
-                                  AND INCOME_ID = $2`;
+  const SQL_SELECT_INCOME = `SELECT i.INCOME_ID, i.CATEGORY, i.DESCRIPTION, i.AMOUNT, i.ADD_DATE, b.bank_name, b.currency
+                                  FROM INCOME i
+                                  JOIN BANK b ON i.bank_id =b.bank_id 
+                                  WHERE i.USER_ID = $1
+                                  AND i.INCOME_ID = $2`;
   return pool.query(SQL_SELECT_INCOME, bindings);
 };

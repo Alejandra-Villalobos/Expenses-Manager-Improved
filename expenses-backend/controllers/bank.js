@@ -1,9 +1,9 @@
 const {
   createBankAccount,
   fetchAllBanksFromUser,
-  findByBankId,
-  fetchAllBanks,
+  findBankById,
   updateAmount,
+  findAnyBankByAccountAndName,
 } = require("../models/bank");
 const { userAuth } = require("../controllers/token");
 
@@ -14,6 +14,11 @@ module.exports.createBank = async (req, res, next) => {
   try {
     const authUser = await userAuth(req);
     await createBankSchema(account, bank_name, currency, amount, username);
+    const { rows } = await findAnyBankByAccountAndName({
+      account,
+      bank_name,
+    });
+    if(rows[0]) return res.status(400).json({ message: "Bank account already exists" });
     await createBankAccount({
       account,
       bank_name,
@@ -42,17 +47,7 @@ module.exports.getOneBankFromUser = async (req, res, next) => {
   const { bank_id } = req.params;
   try {
     const authUser = await userAuth(req);
-    const { rows } = await findByBankId({ user_id: authUser.user_id, bank_id });
-    res.status(200).json({ data: rows });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-module.exports.getAllBanks = async (req, res, next) => {
-  try {
-    await userAuth(req);
-    const { rows } = await fetchAllBanks();
+    const { rows } = await findBankById({ user_id: authUser.user_id, bank_id });
     res.status(200).json({ data: rows });
   } catch (error) {
     res.status(400).json({ message: error.message });

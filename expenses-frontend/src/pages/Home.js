@@ -1,29 +1,26 @@
-import React from 'react'
+import React from "react";
+import Navbar from "../components/Navbar";
+import ShowBanks from "../components/ShowBanks";
+import ShowTransactions from "../components/ShowTransactions";
 
 function Home() {
   return (
-    <>
-    <div className='flex flex-row bg-emerald-100 mt-14 w-full'>
-      <div className='w-full pl-16 pr-8 mt-8'>
-      <h1 className='text-center font-bold text-2xl w-full'>Dashboard</h1>
-        <section className='mt-8 flex flex-row justify-between'>
-         
+      <div className="flex flex-col bg-emerald-100 w-full min-h-screen h-full gap-3 mt-14 overflow-x-hidden">
+      <Navbar />
+        <section className="w-full mx-4 flex items-center flex-col">
+          <h1 className="text-center font-bold text-2xl p-4">Dashboard</h1>
         </section>
-        <section className='justify-center gap-3 flex mt-12'>
-  
+        
+        <section className="w-full mx-4 flex items-center flex-col">
+          <h2 className="text-center font-bold text-2xl p-4">Bank Accounts</h2>
+          <ShowBanks />
         </section>
-        <section className='mt-12'>
-          <h2 className='text-center font-bold text-2xl'>Bank Accounts</h2>
-          
-        </section>
-        <section className='mt-12 mb-8 flex flex-col justify-center'>
-          <h2 className='text-center font-bold text-2xl'>Transactions</h2>
-          
+        <section className="w-full mx-4 flex items-center flex-col">
+          <h2 className="text-center font-bold text-2xl p-4">Transactions</h2>
+          <ShowTransactions/>
         </section>
       </div>
-    </div>
-    </>
-  )
+  );
 }
 
-export default Home
+export default Home;
