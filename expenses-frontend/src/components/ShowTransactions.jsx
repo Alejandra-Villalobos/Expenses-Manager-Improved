@@ -26,17 +26,15 @@ function ShowTransactions() {
     }
   };
 
-  const formatDate = (date) => {
-    date = new Date();
-    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-  };
-
   useEffect(() => {
-    // Realiza ambas llamadas asíncronas en paralelo
     Promise.all([getIncomesService(token), getOutcomesService(token)])
       .then(([incomes, outcomes]) => {
-        // Combina los resultados y actualiza el estado
-        const allTransactions = [...incomes, ...outcomes];
+        var allTransactions = [...incomes, ...outcomes];
+        allTransactions.sort((t1, t2) => {
+          var aa = t1.add_date.split("-").reverse().join(),
+            bb = t2.add_date.split("-").reverse().join();
+          return aa > bb ? -1 : aa < bb ? 1 : 0;
+        });
         setTransactions(allTransactions);
       })
       .catch((error) => {
@@ -80,9 +78,7 @@ function ShowTransactions() {
           <p className="font-fira text-center">
             Description: {transaction.description}
           </p>
-          <p className="font-fira text-center">
-            {formatDate(transaction.add_date)}
-          </p>
+          <p className="font-fira text-center">{transaction.add_date}</p>
           {transaction.to_account != null && (
             <p className="font-fira text-center">
               Sent to: #{transaction.to_account} - {transaction.to_bank_name}

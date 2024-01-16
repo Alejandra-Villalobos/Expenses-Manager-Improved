@@ -4,6 +4,7 @@ module.exports.createOutcome = ({
   category,
   description,
   amount,
+  add_date,
   to_bank_account,
   bank_id,
   user_id,
@@ -12,12 +13,13 @@ module.exports.createOutcome = ({
     category,
     description,
     amount,
+    add_date,
     to_bank_account,
     bank_id,
     user_id,
   ];
-  const SQL_INSERT_OUTCOME = `INSERT INTO OUTCOME(CATEGORY, DESCRIPTION, AMOUNT, TO_BANK_ACCOUNT, BANK_ID, USER_ID)
-                                VALUES($1, $2, $3, $4, $5, $6)`;
+  const SQL_INSERT_OUTCOME = `INSERT INTO OUTCOME(CATEGORY, DESCRIPTION, AMOUNT, ADD_DATE, TO_BANK_ACCOUNT, BANK_ID, USER_ID)
+                                VALUES($1, $2, $3, $4, $5, $6, $7)`;
   return pool.query(SQL_INSERT_OUTCOME, bindings);
 };
 

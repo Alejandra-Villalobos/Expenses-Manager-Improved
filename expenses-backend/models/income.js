@@ -4,12 +4,13 @@ module.exports.createIncome = ({
   category,
   description,
   amount,
+  add_date,
   bank_id,
   user_id,
 }) => {
-  const bindings = [category, description, amount, bank_id, user_id];
-  const SQL_INSERT_INCOME = `INSERT INTO INCOME(CATEGORY, DESCRIPTION, AMOUNT, BANK_ID, USER_ID)
-                                VALUES($1, $2, $3, $4, $5)`;
+  const bindings = [category, description, amount, add_date, bank_id, user_id];
+  const SQL_INSERT_INCOME = `INSERT INTO INCOME(CATEGORY, DESCRIPTION, AMOUNT, ADD_DATE, BANK_ID, USER_ID)
+                                VALUES($1, $2, $3, $4, $5, $6)`;
   return pool.query(SQL_INSERT_INCOME, bindings);
 };
 

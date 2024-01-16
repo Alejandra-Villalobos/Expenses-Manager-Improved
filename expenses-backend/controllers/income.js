@@ -4,18 +4,21 @@ const {
   findIncomeById,
 } = require("../models/income");
 const { userAuth } = require("../controllers/token");
+const { actualDate } = require("../utils/date");
 
 const { createIncomeSchema } = require("../validators/income")
 
 module.exports.createIncome = async (req, res, next) => {
-  const { category, description, amount, bank_id } = req.body;
+  const { category, description, amount, selected_date, bank_id } = req.body;
   try {
     const authUser = await userAuth(req);
     await createIncomeSchema(category, description, amount);
+    const add_date = selected_date ? selected_date : actualDate();
     await createIncome({
       category,
       description,
       amount,
+      add_date,
       bank_id,
       user_id: authUser.user_id,
     });

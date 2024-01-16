@@ -5,6 +5,7 @@ const {
 } = require("../models/outcome");
 const { findAnyBankByAccountAndName } = require("../models/bank");
 const { userAuth } = require("../controllers/token");
+const { actualDate } = require("../utils/date");
 
 const { createOutcomeSchema } = require("../validators/outcome");
 
@@ -18,16 +19,18 @@ const searchBank = async (account, bank_name) => {
 };
 
 module.exports.createOutcome = async (req, res, next) => {
-  const { category, description, amount, to_account, to_bank, bank_id } =
+  const { category, description, amount, selected_date, to_account, to_bank, bank_id } =
     req.body;
   try {
     const authUser = await userAuth(req);
     await createOutcomeSchema(category, description, amount);
     const to_bank_account = (to_account || to_bank) ? await searchBank(to_account, to_bank) : null
+    const add_date = selected_date ? selected_date : actualDate();
     await createOutcome({
       category,
       description,
       amount,
+      add_date,
       to_bank_account,
       bank_id,
       user_id: authUser.user_id,
