@@ -22,4 +22,31 @@ const getBanksService = (token) => {
   });
 };
 
-export { getBanksService }
+const createBankService = (token, account, bank_name, currency, amount, username) => {
+  return new Promise((resolve, reject) => {
+    const data = {
+      account: account,
+      bank_name: bank_name,
+      currency: currency,
+      amount: amount,
+      username: username
+    };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .post(baseURL + "/bank", data, config)
+      .then((response) => {
+        resolve(response.data.message);
+        toast.success(response.data.message)
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+export { getBanksService, createBankService }

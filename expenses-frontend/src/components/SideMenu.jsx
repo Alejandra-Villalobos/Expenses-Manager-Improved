@@ -16,7 +16,7 @@ const SideMenu = ({ page }) => {
 
 
   return (
-    <div className="min-h-screen h-full z-50 fixed top-0 left-0 bg-white flex flex-col items-center">
+    <div className="min-h-screen h-full z-30 fixed top-0 left-0 bg-white flex flex-col items-center">
       <button
         onClick={toggleCollapsed}
         className="p-3 h-14 w-full bg-cyan-500 border-b-2 border-cyan-600"

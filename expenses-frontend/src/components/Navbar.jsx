@@ -20,7 +20,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="z-40 h-14 flex flex-row justify-between shadow-md bg-cyan-500 py-2 border-b-2 border-cyan-600 items-center fixed top-0 left-0 w-full">
+    <nav className="z-10 h-14 flex flex-row justify-between shadow-md bg-cyan-500 py-2 border-b-2 border-cyan-600 items-center fixed top-0 left-0 w-full">
       <p></p>
       <p className="font-bold text-2xl text-center">Expenses Manager</p>
       <button
