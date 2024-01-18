@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Input, Select, DatePicker } from "antd";
+import dayjs from "dayjs";
+import { Input, Select, DatePicker, Switch, Popover } from "antd";
+import { IoMdHelpCircle } from "react-icons/io";
 import { useAuth } from "../../context/AuthContext";
 import { createIncomeService } from "../../api/income";
 import { getBanksService } from "../../api/bank";
@@ -10,23 +12,23 @@ const categoryOptions = [
     label: "Food",
   },
   {
-    value: "work",
+    value: "Work",
     label: "Work",
   },
   {
-    value: "vacation",
+    value: "Vacation",
     label: "Vacation",
   },
   {
-    value: "education",
+    value: "Education",
     label: "Education",
   },
   {
-    value: "health",
+    value: "Health",
     label: "Health",
   },
   {
-    value: "other",
+    value: "Other",
     label: "Other",
   },
 ];
@@ -41,27 +43,41 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
   const [selectedDate, setSelectedDate] = useState("");
   const [bankId, setBankId] = useState("");
 
+  const [currency, setCurrency] = useState("");
+
   const [banks, setBanks] = useState([]);
 
-
   useEffect(() => {
-    getBanksService(token)
-    .then((data) => {
+    getBanksService(token).then((data) => {
       const transformedBanks = data.map((bank) => ({
         value: bank.bank_id,
-        label: `${bank.account} - ${bank.bank_name}`
+        label: `${bank.account} - ${bank.bank_name}`,
+        currency: bank.currency,
       }));
 
       setBanks(transformedBanks);
-    })
+    });
   }, [token]);
 
-  const handleSelectCategory = (value) => {
-    setCategory(value);
+  const content = (
+    <div>
+      <p>Select 'Sync amount' to automatically update</p>
+      <p>the amount of the selected account.</p>
+    </div>
+  );
+
+  const handleSelectAccount = (value) => {
+    setBankId(value);
+    const bankCurrency = banks.find((bank) => bank.value === value).currency;
+    setCurrency(bankCurrency);
   };
 
-  const handleSelectBank = (value) => {
-    setBankId(value);
+  const handleSelectDate = (value) => {
+    const year = value.year();
+    const month = (value.month() < 10 ? "0" : "") + (value.month() + 1);
+    const date = (value.date() < 10 ? "0" : "") + value.date();
+
+    setSelectedDate(`${date}-${month}-${year}`);
   };
 
   const handleSubmit = async (e) => {
@@ -76,17 +92,23 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
       );
       handleUpdate(true);
       setOpen(false);
+
+      setCategory("");
+      setDescription("");
+      setAmount("");
+      setSelectedDate("");
+      setBankId("");
     } catch (error) {}
   };
 
   return open ? (
     <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center bg-black bg-opacity-40 z-50">
-      <div className="relative p-8 bg-white rounded-md">
+      <div className="relative w-4/12 p-8 bg-white rounded-md">
         <h1 className="text-center font-bold text-xl p-2">Add new income</h1>
         <form className="flex flex-col gap-8 p-2">
           <Select
             placeholder="Category"
-            onChange={handleSelectCategory}
+            onChange={(value) => setCategory(value)}
             options={categoryOptions}
           />
           <Input
@@ -94,27 +116,40 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
             placeholder="Description"
             onChange={(e) => setDescription(e.target.value)}
           />
+          <div className="flex gap-2 items-center">
+            <Select
+              className="w-4/6"
+              placeholder="Bank account"
+              onChange={handleSelectAccount}
+              options={banks}
+            />
+            <Switch
+              className="w-2/6"
+              checkedChildren="Sync amount"
+              unCheckedChildren="Don't sync"
+              defaultChecked
+            />
+            <Popover content={content} placement="topRight">
+              <IoMdHelpCircle size={20} color="gray"/>
+            </Popover>
+          </div>
 
           <div className="flex gap-2">
             <Input
               className="w-3/6"
               placeholder="Amount"
               onChange={(e) => setAmount(e.target.value)}
+              suffix={currency}
               required
             />
-            <Input
+            <DatePicker
               className="w-3/6"
-              placeholder="Date"
-              onChange={(e) => setSelectedDate(e.target.value)}
-              required
+              format="DD-MM-YYYY"
+              defaultValue={dayjs()}
+              onChange={handleSelectDate}
             />
           </div>
-          <Select
-            
-            placeholder="Bank account"
-            onChange={handleSelectBank}
-            options={banks}
-          />
+
           <div className="flex flex-row justify-between text-white">
             <button
               className="bg-red-500 rounded-md py-2 px-4"

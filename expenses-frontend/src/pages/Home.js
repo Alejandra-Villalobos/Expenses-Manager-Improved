@@ -46,6 +46,7 @@ function Home() {
           <div className="flex gap-4 justify-center flex-wrap">
             {banks.map((bank) => (
               <BankCard
+                key={bank.bank_id}
                 bank_id={bank.bank_id}
                 bankName={bank.bank_name}
                 account={bank.account}
@@ -60,7 +61,7 @@ function Home() {
           <h2 className="text-center font-bold text-2xl p-4">Transactions</h2>
           <div className="flex flex-row justify-start flex-wrap gap-3">
             {transactions.map((transaction) => (
-              <TransactionCard transaction={transaction} />
+              <TransactionCard key={transaction.income_id || transaction.outcome_id} transaction={transaction} />
             ))}
           </div>
         </section>

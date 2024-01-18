@@ -5,16 +5,16 @@ import { createBankService } from "../../api/bank";
 
 const currencyOptions = [
   {
-    value: "dollar",
-    label: "Dollar",
+    value: "USD",
+    label: "USD",
   },
   {
-    value: "euro",
-    label: "Euro",
+    value: "EUR",
+    label: "EUR",
   },
   {
-    value: "bitcoin",
-    label: "Bitcoin",
+    value: "BTC",
+    label: "BTC",
   },
 ];
 
@@ -28,10 +28,6 @@ const AddBank = ({ open, setOpen, handleUpdate }) => {
   const [amount, setAmount] = useState("");
   const [username, setUsername] = useState("");
 
-  const handleSelect = (value) => {
-    setCurrency(value);
-  };
-
   const handleSubmit = async (e) => {
     try {
       await createBankService(
@@ -44,6 +40,13 @@ const AddBank = ({ open, setOpen, handleUpdate }) => {
       );
       handleUpdate(true);
       setOpen(false);
+
+      setAccount('')
+      setBankName('')
+      setCurrency('')
+      setAmount('')
+      setAmount('')
+      setUsername('')
     } catch (error) {}
   };
 
@@ -68,7 +71,7 @@ const AddBank = ({ open, setOpen, handleUpdate }) => {
             <Select
               className="w-3/6"
               placeholder="Currency"
-              onChange={handleSelect}
+              onChange={setCurrency}
               options={currencyOptions}
             />
             <Input

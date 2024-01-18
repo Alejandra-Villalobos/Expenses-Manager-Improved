@@ -19,11 +19,12 @@ function Banks() {
 
   useEffect(() => {
     getBanksService(token).then((data) => setBanks(data));
+    setUpdateBanks(false)
   }, [token, updateBanks]);
 
   return (
     <div className="flex bg-emerald-100 overflow-x-hidden">
-      <Toaster/>
+      <Toaster />
       <SideMenu page={"banks"} />
       <div className="flex flex-col w-full min-h-screen h-full gap-3 mt-14">
         <Navbar />
@@ -35,11 +36,16 @@ function Banks() {
             <button onClick={() => setShowBankForm(true)}>
               <MdAddCircle size={25} />
             </button>
-            <AddBank open={showBankForm} setOpen={setShowBankForm} handleUpdate={setUpdateBanks}/>
+            <AddBank
+              open={showBankForm}
+              setOpen={setShowBankForm}
+              handleUpdate={setUpdateBanks}
+            />
           </section>
           <div className="flex gap-4 justify-center flex-wrap">
             {banks.map((bank) => (
               <BankCard
+                key={bank.bank_id}
                 bank_id={bank.bank_id}
                 bankName={bank.bank_name}
                 account={bank.account}

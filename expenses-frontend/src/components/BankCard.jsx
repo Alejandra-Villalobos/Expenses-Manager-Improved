@@ -10,9 +10,9 @@ import { FcSimCardChip } from "react-icons/fc";
 function BankCard({ bank_id, bankName, account, currency, amount, username }) {
   const setCur = (curr) => {
     switch (curr) {
-      case "euro":
+      case "EUR":
         return <BsCurrencyEuro />;
-      case "bitcoin":
+      case "BTC":
         return <BsCurrencyBitcoin />;
       default:
         return <BsCurrencyDollar />;
