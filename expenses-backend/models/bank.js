@@ -35,6 +35,15 @@ module.exports.createBankAccount = ({ account, bank_name, currency, amount, user
                                   AND BANK_NAME = $2`;
     return pool.query(SQL_SELECT_BANKS, bindings);
   };
+
+  module.exports.findBankCurrency = ({ bank_id }) => {
+    const bindings = [bank_id];
+    const SQL_SELECT_BANKS = `SELECT
+                                  BANK_ID, CURRENCY
+                                  FROM BANK
+                                  WHERE BANK_ID = $1`;
+    return pool.query(SQL_SELECT_BANKS, bindings);
+  };
   
   module.exports.updateAmount = ({ amount, bank_id }) => {
     const bindings = [amount, bank_id];

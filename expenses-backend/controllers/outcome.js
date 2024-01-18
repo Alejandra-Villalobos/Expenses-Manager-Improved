@@ -3,12 +3,22 @@ const {
   fetchAllOutcomes,
   findOutcomeById,
 } = require("../models/outcome");
-const { findAnyBankByAccountAndName, updateAmount } = require("../models/bank");
+const {
+  findAnyBankByAccountAndName,
+  updateAmount,
+  findBankCurrency,
+} = require("../models/bank");
 const { userAuth } = require("../controllers/token");
 const { actualDate } = require("../utils/date");
 
 const { createOutcomeSchema } = require("../validators/outcome");
 const { createIncome } = require("../models/income");
+
+const convertCurr = (from, amount, to) => {
+  if (from === to) return amount;
+  else if (from === "USD" && to === "EUR") return amount * 0.92
+  else return amount * 1.09
+}
 
 const searchBank = async (account, bank_name) => {
   const { rows } = await findAnyBankByAccountAndName({
@@ -47,16 +57,21 @@ module.exports.createOutcome = async (req, res, next) => {
       user_id: authUser.user_id,
     });
     if (to_bank_account) {
-      await createIncome({
-        category,
-        description: `Transfer from ${authUser.email}`,
-        amount,
-        add_date,
-        bank_id: to_bank_account_id,
-        user_id: to_bank_account.user_id,
-      });
+      const { rows } = await findBankCurrency({ bank_id });
+      const fromCurr = rows[0].currency;
+      const toCurr = to_bank_account.currency;
+      var amountConverted = convertCurr(fromCurr, amount, toCurr)
+      
+       await createIncome({
+          category,
+          description: `Transfer from ${authUser.email}`,
+          amount: amountConverted,
+          add_date,
+          bank_id: to_bank_account_id,
+          user_id: to_bank_account.user_id,
+        });
       if (sync_to_account) {
-        await updateAmount({ amount, bank_id: to_bank_account_id });
+        await updateAmount({ amount: amountConverted, bank_id: to_bank_account_id });
       }
     }
     res.status(200).json({ message: "Outcome created!" });

@@ -36,7 +36,7 @@ function Transactions() {
         console.error("Error fetching transactions:", error);
       });
     setUpdateIncomes(false);
-  }, [token, updateIncomes]);
+  }, [token, updateIncomes, updateOutcomes]);
   return (
     <div className="flex bg-emerald-100 overflow-x-hidden">
       <Toaster />

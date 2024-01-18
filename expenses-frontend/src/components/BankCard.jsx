@@ -1,7 +1,6 @@
 import React from "react";
 import "../index.css";
 import {
-  BsCurrencyBitcoin,
   BsCurrencyDollar,
   BsCurrencyEuro,
 } from "react-icons/bs";
@@ -12,8 +11,6 @@ function BankCard({ bank_id, bankName, account, currency, amount, username }) {
     switch (curr) {
       case "EUR":
         return <BsCurrencyEuro />;
-      case "BTC":
-        return <BsCurrencyBitcoin />;
       default:
         return <BsCurrencyDollar />;
     }

@@ -2,7 +2,6 @@ import React from "react";
 import { ImMinus } from "react-icons/im";
 import { BiPlusMedical } from "react-icons/bi";
 import {
-  BsCurrencyBitcoin,
   BsCurrencyDollar,
   BsCurrencyEuro,
 } from "react-icons/bs";
@@ -12,8 +11,6 @@ function TransactionCard({ transaction }) {
     switch (curr) {
       case "EUR":
         return <BsCurrencyEuro />;
-      case "BTC":
-        return <BsCurrencyBitcoin />;
       default:
         return <BsCurrencyDollar />;
     }

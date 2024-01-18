@@ -12,10 +12,6 @@ const currencyOptions = [
     value: "EUR",
     label: "EUR",
   },
-  {
-    value: "BTC",
-    label: "BTC",
-  },
 ];
 
 const AddBank = ({ open, setOpen, handleUpdate }) => {
