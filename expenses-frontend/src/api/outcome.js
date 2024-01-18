@@ -30,7 +30,8 @@ const createOutcomeService = (
   selected_date,
   to_account,
   to_bank,
-  bank_id
+  bank_id,
+  sync_to_account
 ) => {
   return new Promise((resolve, reject) => {
     const data = {
@@ -41,6 +42,7 @@ const createOutcomeService = (
       to_account: to_account,
       to_bank: to_bank,
       bank_id: bank_id,
+      sync_to_account: sync_to_account
     };
     const config = {
       headers: {

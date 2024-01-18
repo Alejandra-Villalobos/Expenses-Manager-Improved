@@ -51,6 +51,7 @@ const AddOutcome = ({ open, setOpen, handleUpdate }) => {
 
   const [toAccount, setToAccount] = useState("");
   const [toBank, setToBank] = useState("");
+  const [syncToAccount, setSyncToAccount] = useState(false);
 
   const [banks, setBanks] = useState([]);
 
@@ -70,6 +71,13 @@ const AddOutcome = ({ open, setOpen, handleUpdate }) => {
     <div>
       <p>Select 'Sync amount' to automatically update</p>
       <p>the amount of the selected account.</p>
+    </div>
+  );
+
+  const content2 = (
+    <div>
+      <p>Select 'Sync to transfer' to automatically</p>
+      <p>update the amount of the account to transfer.</p>
     </div>
   );
 
@@ -97,17 +105,14 @@ const AddOutcome = ({ open, setOpen, handleUpdate }) => {
         selectedDate,
         toAccount,
         toBank,
-        bankId
+        bankId,
+        syncToAccount
       );
 
       if (syncAccount) {
         try {
-          await updateBankService(token, amount, bankId);
+          await updateBankService(token, -amount, bankId);
         } catch (error) {}
-      }
-
-      if(toAccount || toBank){
-       
       }
 
       handleUpdate(true);
@@ -175,10 +180,22 @@ const AddOutcome = ({ open, setOpen, handleUpdate }) => {
               onChange={handleSelectDate}
             />
           </div>
-          <Checkbox onChange={(e) => setDisableTransfer(e.target.checked)}>
-            Transfer to account
-          </Checkbox>
-          <div className="flex gap-2 -mt-4">
+          <div className="flex gap-2 justify-between">
+            <Checkbox onChange={(e) => setDisableTransfer(e.target.checked)}>
+              Transfer to another account
+            </Checkbox>
+            <Switch
+              className=" bg-gray-400"
+              checkedChildren="Sync to transfer"
+              unCheckedChildren="Don't sync"
+              defaultChecked={false}
+              onChange={setSyncToAccount}
+            />
+            <Popover content={content2}>
+              <IoMdHelpCircleOutline size={20} color="gray" />
+            </Popover>
+          </div>
+          <div className="flex gap-2">
             <Input
               className="w-3/6"
               placeholder="To Account"
