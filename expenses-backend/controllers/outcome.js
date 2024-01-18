@@ -8,6 +8,7 @@ const { userAuth } = require("../controllers/token");
 const { actualDate } = require("../utils/date");
 
 const { createOutcomeSchema } = require("../validators/outcome");
+const { createIncome } = require("../models/income");
 
 const searchBank = async (account, bank_name) => {
   const { rows } = await findAnyBankByAccountAndName({
@@ -15,7 +16,7 @@ const searchBank = async (account, bank_name) => {
     bank_name,
   });
   if (!rows[0]) throw new Error("Bank not found")
-  else return rows[0].bank_id;
+  else return rows[0];
 };
 
 module.exports.createOutcome = async (req, res, next) => {
@@ -24,17 +25,28 @@ module.exports.createOutcome = async (req, res, next) => {
   try {
     const authUser = await userAuth(req);
     await createOutcomeSchema(category, description, amount);
-    const to_bank_account = (to_account || to_bank) ? await searchBank(to_account, to_bank) : null
+    const to_bank_account = (to_account || to_bank) ? await searchBank(to_account, to_bank) : null;
+    const to_bank_account_id = to_bank_account ? to_bank_account.bank_id : null;
     const add_date = selected_date ? selected_date : actualDate();
     await createOutcome({
       category,
       description,
       amount,
       add_date,
-      to_bank_account,
+      to_bank_account: to_bank_account_id,
       bank_id,
       user_id: authUser.user_id,
     });
+    if(to_bank_account){
+      await createIncome({
+        category,
+        description: `Transfer from ${authUser.email}`,
+        amount,
+        add_date,
+        bank_id: to_bank_account.bank_id,
+        user_id: to_bank_account.user_id
+      })
+    }
     res.status(200).json({ message: "Outcome created!" });
   } catch (error) {
     res.status(400).json({ message: error.message });

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { Input, Select, DatePicker, Switch, Popover } from "antd";
+import { Input, Select, DatePicker, Switch, Popover, Checkbox } from "antd";
 import { IoMdHelpCircleOutline } from "react-icons/io";
 import { useAuth } from "../../context/AuthContext";
 import { createIncomeService } from "../../api/income";
+import { createOutcomeService } from "../../api/outcome";
 import { getBanksService, updateBankService } from "../../api/bank";
 
 const categoryOptions = [
@@ -33,7 +34,7 @@ const categoryOptions = [
   },
 ];
 
-const AddIncome = ({ open, setOpen, handleUpdate }) => {
+const AddOutcome = ({ open, setOpen, handleUpdate }) => {
   const { user } = useAuth();
   const token = user.token;
 
@@ -45,6 +46,11 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
   const [syncAccount, setSyncAccount] = useState(true);
 
   const [currency, setCurrency] = useState("");
+
+  const [disableTransfer, setDisableTransfer] = useState(false);
+
+  const [toAccount, setToAccount] = useState("");
+  const [toBank, setToBank] = useState("");
 
   const [banks, setBanks] = useState([]);
 
@@ -83,12 +89,14 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
 
   const handleSubmit = async (e) => {
     try {
-      await createIncomeService(
+      await createOutcomeService(
         token,
         category,
         description,
         amount,
         selectedDate,
+        toAccount,
+        toBank,
         bankId
       );
 
@@ -96,6 +104,10 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
         try {
           await updateBankService(token, amount, bankId);
         } catch (error) {}
+      }
+
+      if(toAccount || toBank){
+       
       }
 
       handleUpdate(true);
@@ -107,14 +119,17 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
       setSelectedDate("");
       setBankId("");
       setSyncAccount(true);
-      setCurrency("")
+      setCurrency("");
+      setDisableTransfer(false);
+      setToAccount("");
+      setToBank("");
     } catch (error) {}
   };
 
   return open ? (
     <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center bg-black bg-opacity-40 z-50">
       <div className="relative w-4/12 p-4 bg-white rounded-md">
-        <h1 className="text-center font-bold text-xl p-2">Add new income</h1>
+        <h1 className="text-center font-bold text-xl p-2">Add new outcome</h1>
         <form className="flex flex-col gap-8 p-2">
           <Select
             placeholder="Category"
@@ -160,6 +175,23 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
               onChange={handleSelectDate}
             />
           </div>
+          <Checkbox onChange={(e) => setDisableTransfer(e.target.checked)}>
+            Transfer to account
+          </Checkbox>
+          <div className="flex gap-2 -mt-4">
+            <Input
+              className="w-3/6"
+              placeholder="To Account"
+              onChange={(e) => setToAccount(e.target.value)}
+              disabled={!disableTransfer}
+            />
+            <Input
+              className="w-3/6"
+              placeholder="To bank"
+              onChange={(e) => setToBank(e.target.value)}
+              disabled={!disableTransfer}
+            />
+          </div>
 
           <div className="flex flex-row justify-between text-white">
             <button
@@ -175,7 +207,7 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
                 handleSubmit();
               }}
             >
-              Add income
+              Add Outcome
             </button>
           </div>
         </form>
@@ -184,4 +216,4 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
   ) : null;
 };
 
-export default AddIncome;
+export default AddOutcome;

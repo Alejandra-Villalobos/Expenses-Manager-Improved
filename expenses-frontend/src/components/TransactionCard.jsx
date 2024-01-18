@@ -36,9 +36,7 @@ function TransactionCard({ transaction }) {
       >
         {transaction.hasOwnProperty("to_account") ? "Outcome" : "Income"}
       </p>
-      <p className="font-bold text-md text-center">
-        {transaction.bank_name}
-      </p>
+      <p className="font-bold text-md text-center">{transaction.bank_name}</p>
       <p className="font-bold text-lg text-center flex items-center justify-center gap-1">
         {transaction.hasOwnProperty("to_account") ? (
           <ImMinus color="red" />
@@ -49,13 +47,17 @@ function TransactionCard({ transaction }) {
         {transaction.amount.toFixed(2)}
       </p>
       <p className="text-center">{transaction.category}</p>
-      <p className="text-center">
-        Description: {transaction.description}
-      </p>
-      {transaction.to_account != null && (
+      {transaction.description.length ? (
+        <p className="text-center">Description: {transaction.description}</p>
+      ) : (
+        ""
+      )}
+      {transaction.to_account != null ? (
         <p className="text-center">
           Sent to: #{transaction.to_account} - {transaction.to_bank_name}
         </p>
+      ) : (
+        ""
       )}
       <p className="text-center">{transaction.add_date}</p>
     </div>

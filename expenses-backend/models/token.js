@@ -9,7 +9,9 @@ module.exports.createToken = ({ content, user_id, active }) => {
 
 module.exports.findUser = ({ content }) => {
     const bindings = [content];
-    const SQL_SELECT_USER = `SELECT USER_ID FROM TOKEN
+    const SQL_SELECT_USER = `SELECT t.USER_ID, u.EMAIL
+                                FROM TOKEN t
+                                JOIN USERS u ON u.USER_ID = t.USER_ID
                                 WHERE CONTENT = $1`;
     return pool.query(SQL_SELECT_USER, bindings);
   };

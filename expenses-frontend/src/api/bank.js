@@ -22,14 +22,21 @@ const getBanksService = (token) => {
   });
 };
 
-const createBankService = (token, account, bank_name, currency, amount, username) => {
+const createBankService = (
+  token,
+  account,
+  bank_name,
+  currency,
+  amount,
+  username
+) => {
   return new Promise((resolve, reject) => {
     const data = {
       account: account,
       bank_name: bank_name,
       currency: currency,
       amount: amount,
-      username: username
+      username: username,
     };
     const config = {
       headers: {
@@ -40,7 +47,7 @@ const createBankService = (token, account, bank_name, currency, amount, username
       .post(baseURL + "/bank", data, config)
       .then((response) => {
         resolve(response.data.message);
-        toast.success(response.data.message)
+        toast.success(response.data.message);
       })
       .catch((error) => {
         reject(error.response.data.message);
@@ -49,4 +56,27 @@ const createBankService = (token, account, bank_name, currency, amount, username
   });
 };
 
-export { getBanksService, createBankService }
+const updateBankService = (token, amount, bankId) => {
+  return new Promise((resolve, reject) => {
+    const data = {
+      amount: amount,
+    };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios
+      .put(baseURL + `/bank/${bankId}`, data, config)
+      .then((response) => {
+        resolve(response.data.message);
+        toast.success(response.data.message);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+        toast.error(error.response.data.message);
+      });
+  });
+};
+
+export { getBanksService, createBankService, updateBankService };
