@@ -39,9 +39,6 @@ function Home() {
       <div className="flex flex-col w-full min-h-screen h-full gap-3 mt-14">
         <Navbar />
         <section className="w-full mx-4 flex items-center flex-col">
-          <h1 className="text-center font-bold text-2xl p-4">Statistics</h1>
-        </section>
-        <section className="w-full mx-4 flex items-center flex-col">
           <h2 className="text-center font-bold text-2xl p-4">Bank Accounts</h2>
           <div className="flex gap-4 justify-center flex-wrap">
             {banks.map((bank) => (

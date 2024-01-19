@@ -35,8 +35,8 @@ const SideMenu = ({ page }) => {
           </Link>
         </Menu.Item>
         <Menu.Item icon={<AiFillPieChart size={20} />} key="statistics">
-          <Link to="/Statictics" className="flex items-center gap-3">
-            <p>Statictics</p>
+          <Link to="/statistics" className="flex items-center gap-3">
+            <p>Statistics</p>
           </Link>
         </Menu.Item>
         <Menu.Item icon={<AiFillBank size={20} />} key="banks">
