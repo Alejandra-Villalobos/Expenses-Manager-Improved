@@ -12,9 +12,13 @@ function Statistics() {
         <Navbar />
         <section className="w-full mx-4 flex items-center flex-col">
           <h1 className="text-center font-bold text-2xl pt-4">Statistics</h1>
-          <p className="text-center italic text-md text-gray-400">* All amounts have been converted to USD </p>
-          <BankAmounts/>
-          <CategoryAmounts/>
+          <p className="text-center italic text-md text-gray-400">
+            * All amounts have been converted to USD{" "}
+          </p>
+          <div className="flex flex-wrap">
+            <BankAmounts />
+            <CategoryAmounts />
+          </div>
         </section>
       </div>
     </div>

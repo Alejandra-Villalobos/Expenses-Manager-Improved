@@ -10,11 +10,11 @@ export default function BankAmounts() {
   const [banks, setBanks] = useState([]);
 
   const colors = [
+    "#f39c12",
+    "#e74c3c",
     "#3498db",
     "#2ecc71",
-    "#e74c3c",
     "#9b59b6",
-    "#f39c12",
     "#1abc9c",
     "#c0392b",
     "#7f8c8d",
@@ -67,12 +67,12 @@ export default function BankAmounts() {
   }, [token]);
 
   return (
-    <>
+    <div className="flex  flex-col items-center">
       <p className="font-bold text-xl pt-4">Amount distribution in accounts</p>
-      <PieChart width={730} height={300}>
+      <PieChart width={600} height={300}>
         <Pie
           dataKey="value"
-          outerRadius={90}
+          innerRadius={30}
           data={banks}
           labelLine={false}
           cx="50%"
@@ -86,6 +86,6 @@ export default function BankAmounts() {
         <Legend verticalAlign="bottom" height={36} />
         <Tooltip formatter={(value) => value.toFixed(2)} />
       </PieChart>
-    </>
+    </div>
   );
 }

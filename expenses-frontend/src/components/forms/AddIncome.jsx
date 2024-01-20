@@ -8,7 +8,7 @@ import { getBanksService, updateBankService } from "../../api/bank";
 
 const categoryOptions = [
   {
-    value: "food",
+    value: "Food",
     label: "Food",
   },
   {
@@ -74,9 +74,9 @@ const AddIncome = ({ open, setOpen, handleUpdate }) => {
   };
 
   const handleSelectDate = (value) => {
-    const year = value.year();
-    const month = (value.month() < 10 ? "0" : "") + (value.month() + 1);
-    const date = (value.date() < 10 ? "0" : "") + value.date();
+    const year = value?.year();
+    const month = (value?.month() < 10 ? "0" : "") + (value?.month() + 1);
+    const date = (value?.date() < 10 ? "0" : "") + value?.date();
 
     setSelectedDate(`${date}-${month}-${year}`);
   };
