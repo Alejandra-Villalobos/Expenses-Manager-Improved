@@ -14,6 +14,8 @@ function Transactions() {
   const { user } = useAuth();
   const token = user.token;
 
+  const [menuWidth, setMenuWidth] = useState(0);
+
   const [showIncomeForm, setShowIncomeForm] = useState(false);
   const [showOutcomeForm, setShowOutcomeForm] = useState(false);
 
@@ -40,20 +42,29 @@ function Transactions() {
   return (
     <div className="flex bg-emerald-100 overflow-x-hidden">
       <Toaster />
-      <SideMenu page={"transactions"} />
-      <div className="flex flex-col w-full min-h-screen h-full gap-3 mt-14">
+      <SideMenu page={"transactions"} passWidth={setMenuWidth} />
+      <div
+        className="flex flex-col w-full min-h-screen h-full gap-3 mt-14 transition-all ease-in-out duration-700"
+        style={{ marginLeft: `${menuWidth + 12}px` }}
+      >
         <Navbar />
         <div className="w-full">
-          <section className="flex flex-col justify-center items-center mt-8">
+          <section className="flex flex-col justify-center items-center">
             <h1 className="text-center font-bold text-2xl p-4">Transactions</h1>
             <div className="flex gap-3">
-              <button className="flex items-center bg-green-500 rounded-md py-2 px-4 shadow-lg" onClick={() => setShowIncomeForm(true)}>
+              <button
+                className="flex items-center bg-green-500 rounded-md py-2 px-4 shadow-lg"
+                onClick={() => setShowIncomeForm(true)}
+              >
                 Add Income
-                <FaLongArrowAltDown/>
+                <FaLongArrowAltDown />
               </button>
-              <button className="flex items-center bg-red-500 rounded-md py-2 px-4 shadow-lg" onClick={() => setShowOutcomeForm(true)}>
+              <button
+                className="flex items-center bg-red-500 rounded-md py-2 px-4 shadow-lg"
+                onClick={() => setShowOutcomeForm(true)}
+              >
                 Add Outcome
-                <FaLongArrowAltUp/>
+                <FaLongArrowAltUp />
               </button>
             </div>
             <AddIncome

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { AiFillPieChart, AiFillBank, AiFillHome } from "react-icons/ai";
@@ -8,15 +8,24 @@ import { Menu } from "antd";
 
 import "../index.css";
 
-const SideMenu = ({ page }) => {
+const SideMenu = ({ page, passWidth }) => {
   const [collapsed, setCollapsed] = useState(false);
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
+  const [width, setWidth] = useState(155);
+  const widthRef = useRef(null);
 
+  useLayoutEffect(() => {
+    setWidth(widthRef.current.offsetWidth);
+    passWidth(width)
+  }, [collapsed]);
 
   return (
-    <div className="min-h-screen h-full z-30 fixed top-0 left-0 bg-white flex flex-col items-center">
+    <div
+      className="min-h-screen bg-white flex flex-col items-center fixed h-screen left-0 z-30 w-max"
+      ref={widthRef}
+    >
       <button
         onClick={toggleCollapsed}
         className="p-3 h-14 w-full bg-cyan-500 border-b-2 border-cyan-600"
@@ -28,7 +37,11 @@ const SideMenu = ({ page }) => {
           size={25}
         />
       </button>
-      <Menu mode="inline" inlineCollapsed={collapsed} defaultSelectedKeys={page}>
+      <Menu
+        mode="inline"
+        inlineCollapsed={collapsed}
+        defaultSelectedKeys={page}
+      >
         <Menu.Item icon={<AiFillHome size={20} />} key="home">
           <Link to="/home" className="flex items-center gap-3">
             <p>Home</p>

@@ -12,6 +12,8 @@ function Home() {
   const { user } = useAuth();
   const token = user.token;
 
+  const [menuWidth, setMenuWidth] = useState(0);
+
   const [banks, setBanks] = useState([]);
   var [transactions, setTransactions] = useState([]);
 
@@ -35,12 +37,15 @@ function Home() {
 
   return (
     <div className="flex bg-emerald-100 overflow-x-hidden">
-      <SideMenu page={"home"} />
-      <div className="flex flex-col w-full min-h-screen h-full gap-3 mt-14 ">
+      <SideMenu page={"home"} passWidth={setMenuWidth} />
+      <div
+        className="flex flex-col w-full min-h-screen h-full gap-3 mt-14 transition-all ease-in-out duration-700"
+        style={{ marginLeft: `${menuWidth + 12}px` }}
+      >
         <Navbar />
-        <section className="w-full mx-4 flex items-center flex-col">
+        <section className="w-full flex items-center flex-col">
           <h2 className="text-center font-bold text-2xl p-4">Bank Accounts</h2>
-          <div className="flex gap-4 justify-center flex-wrap">
+          <div className="flex gap-4 flex-wrap">
             {banks.map((bank) => (
               <BankCard
                 key={bank.bank_id}
@@ -58,7 +63,10 @@ function Home() {
           <h2 className="text-center font-bold text-2xl p-4">Transactions</h2>
           <div className="flex flex-row justify-start flex-wrap gap-3">
             {transactions.map((transaction) => (
-              <TransactionCard key={transaction.income_id || transaction.outcome_id} transaction={transaction} />
+              <TransactionCard
+                key={transaction.income_id || transaction.outcome_id}
+                transaction={transaction}
+              />
             ))}
           </div>
         </section>

@@ -13,6 +13,8 @@ function Banks() {
   const { user } = useAuth();
   const token = user.token;
 
+  const [menuWidth, setMenuWidth] = useState(0);
+
   const [showBankForm, setShowBankForm] = useState(false);
   const [banks, setBanks] = useState([]);
   const [updateBanks, setUpdateBanks] = useState(false);
@@ -25,11 +27,14 @@ function Banks() {
   return (
     <div className="flex bg-emerald-100 overflow-x-hidden">
       <Toaster />
-      <SideMenu page={"banks"} />
-      <div className="flex flex-col w-full min-h-screen h-full gap-3 mt-14">
+      <SideMenu page={"banks"} passWidth={setMenuWidth} />
+      <div
+        className="flex flex-col w-full min-h-screen h-full gap-3 mt-14 transition-all ease-in-out duration-700"
+        style={{ marginLeft: `${menuWidth + 12}px` }}
+      >
         <Navbar />
         <div className="w-full">
-          <section className="flex flex-row justify-center items-center gap-x-5 mt-8">
+          <section className="flex flex-row justify-center items-center gap-x-5">
             <h1 className="text-center font-bold text-2xl p-4">
               Bank Accounts
             </h1>
