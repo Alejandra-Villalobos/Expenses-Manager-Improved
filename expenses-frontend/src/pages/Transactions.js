@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FaLongArrowAltUp, FaLongArrowAltDown, FaSearch } from "react-icons/fa";
+import { FaLongArrowAltUp, FaLongArrowAltDown } from "react-icons/fa";
+import { GrPowerReset } from "react-icons/gr";
+import { IoSearch } from "react-icons/io5";
 import Navbar from "../components/Navbar";
 import SideMenu from "../components/SideMenu";
 import { useAuth } from "../context/AuthContext";
@@ -125,7 +127,8 @@ function Transactions() {
               handleUpdate={setUpdateOutcomes}
             />
           </section>
-          <div className="flex items-end">
+
+          <div className="flex items-end w-full justify-center gap-3 mt-8 px-4">
             <DateFilter setDates={setFilterDates} values={filterDates} />
             <CategoryFilter
               setCategories={setFilterCategories}
@@ -136,7 +139,7 @@ function Transactions() {
               className="bg-blue-400 p-2 rounded-md"
               onClick={() => handleFilter()}
             >
-              <FaSearch size={25} color="white" />
+              <IoSearch className="hover:scale-125 transition-all ease-in-out" size={25} color="white" />
             </button>
             <button
               className="bg-orange-400 p-2 rounded-md"
@@ -147,10 +150,11 @@ function Transactions() {
                 setFilterBanks([]);
               }}
             >
-              Reset Filters
+              <GrPowerReset className=" hover:rotate-180 transition-all ease-in-out" size={25} color="white"/>
             </button>
           </div>
-          <div className="flex flex-row justify-start flex-wrap gap-3">
+
+          <div className="flex flex-row justify-start flex-wrap gap-3 mt-8 px-4">
             {transactions.map((transaction) => (
               <TransactionCard
                 key={transaction.income_id || transaction.outcome_id}

@@ -29,23 +29,26 @@ const categoryOptions = [
 ];
 
 function CategoryFilter({ setCategories, values }) {
-  const [initialValue, setInitialValue] = useState([])
+  const [initialValue, setInitialValue] = useState([]);
 
   useEffect(() => {
-    setInitialValue(values)
-  }, [values])
+    setInitialValue(values);
+  }, [values]);
 
   return (
-    <Select
-      mode="multiple"
-      style={{
-        width: "40%",
-      }}
-      value={initialValue}
-      placeholder="Select Categories"
-      onChange={setCategories}
-      options={categoryOptions}
-    />
+    <div className="w-4/12">
+      <p>Category filter</p>
+      <Select
+        mode="multiple"
+        value={initialValue}
+        style={{
+          width: "100%"
+        }}
+        placeholder="Select Categories"
+        onChange={setCategories}
+        options={categoryOptions}
+      />
+    </div>
   );
 }
 

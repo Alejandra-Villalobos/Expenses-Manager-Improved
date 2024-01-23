@@ -26,16 +26,19 @@ function BanksFilter({ setBankList, values }) {
   }, [values]);
 
   return (
-    <Select
-      mode="multiple"
-      style={{
-        width: "40%",
-      }}
-      value={initialValue}
-      placeholder="Select Banks"
-      onChange={setBankList}
-      options={banks}
-    />
+    <div className="w-4/12">
+      <p>Banks filter</p>
+      <Select
+        mode="multiple"
+        value={initialValue}
+        style={{
+          width: "100%"
+        }}
+        placeholder="Select Banks"
+        onChange={setBankList}
+        options={banks}
+      />
+    </div>
   );
 }
 
