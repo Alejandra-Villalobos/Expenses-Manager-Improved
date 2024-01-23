@@ -9,6 +9,8 @@ import TransactionCard from "../components/TransactionCard";
 import AddIncome from "../components/forms/AddIncome";
 import { Toaster } from "react-hot-toast";
 import AddOutcome from "../components/forms/AddOutcome";
+import DateFilter from "../components/forms/DateFilter";
+import CategoryFilter from "../components/forms/CategoryFilter";
 
 function Transactions() {
   const { user } = useAuth();
@@ -22,6 +24,12 @@ function Transactions() {
   var [transactions, setTransactions] = useState([]);
   const [updateIncomes, setUpdateIncomes] = useState(false);
   const [updateOutcomes, setUpdateOutcomes] = useState(false);
+
+  const [filterDates, setFilterDates] = useState([]);
+  const [filterCategories, setFilterCategories] = useState([]);
+
+
+  const [resetFilters, setResetFilters] = useState(false);
 
   useEffect(() => {
     Promise.all([getIncomesService(token), getOutcomesService(token)])
@@ -38,7 +46,20 @@ function Transactions() {
         console.error("Error fetching transactions:", error);
       });
     setUpdateIncomes(false);
-  }, [token, updateIncomes, updateOutcomes]);
+    setUpdateOutcomes(false);
+    setResetFilters(false);
+  }, [token, updateIncomes, updateOutcomes, resetFilters]);
+
+  const handleFilter = () => {
+    const filteredTransactions = [];
+    transactions.forEach((t) => {
+      var tDate = t.add_date.split("-").reverse().join("");
+      if(filterCategories.find((c) => t.category === c) && tDate >= filterDates[0] && tDate <= filterDates[1])
+        filteredTransactions.push(t)
+    })
+    setTransactions(filteredTransactions);
+  }
+
   return (
     <div className="flex bg-emerald-100 overflow-x-hidden">
       <Toaster />
@@ -78,6 +99,12 @@ function Transactions() {
               handleUpdate={setUpdateOutcomes}
             />
           </section>
+          <div className="flex items-end">
+            <DateFilter setDates={setFilterDates} />
+            <CategoryFilter setCategories={setFilterCategories}/>
+            <button className="bg-blue-400 p-2 rounded-md" onClick={() => handleFilter()}>Reset Filters</button>
+            <button className="bg-orange-400 p-2 rounded-md" onClick={() => setResetFilters(true)}>Reset Filters</button>
+          </div>
           <div className="flex flex-row justify-start flex-wrap gap-3">
             {transactions.map((transaction) => (
               <TransactionCard
