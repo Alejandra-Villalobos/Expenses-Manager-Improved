@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Select } from "antd";
 
 const categoryOptions = [
@@ -28,14 +28,20 @@ const categoryOptions = [
   },
 ];
 
-function CategoryFilter({ setCategories }) {
+function CategoryFilter({ setCategories, values }) {
+  const [initialValue, setInitialValue] = useState([])
+
+  useEffect(() => {
+    setInitialValue(values)
+  }, [values])
+
   return (
     <Select
       mode="multiple"
-      allowClear
       style={{
         width: "40%",
       }}
+      value={initialValue}
       placeholder="Select Categories"
       onChange={setCategories}
       options={categoryOptions}

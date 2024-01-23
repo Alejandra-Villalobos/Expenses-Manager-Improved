@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaLongArrowAltUp, FaLongArrowAltDown } from "react-icons/fa";
+import { FaLongArrowAltUp, FaLongArrowAltDown, FaSearch } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import SideMenu from "../components/SideMenu";
 import { useAuth } from "../context/AuthContext";
@@ -9,8 +9,9 @@ import TransactionCard from "../components/TransactionCard";
 import AddIncome from "../components/forms/AddIncome";
 import { Toaster } from "react-hot-toast";
 import AddOutcome from "../components/forms/AddOutcome";
-import DateFilter from "../components/forms/DateFilter";
-import CategoryFilter from "../components/forms/CategoryFilter";
+import DateFilter from "../components/filters/DateFilter";
+import CategoryFilter from "../components/filters/CategoryFilter";
+import BanksFilter from "../components/filters/BanksFilter";
 
 function Transactions() {
   const { user } = useAuth();
@@ -25,9 +26,9 @@ function Transactions() {
   const [updateIncomes, setUpdateIncomes] = useState(false);
   const [updateOutcomes, setUpdateOutcomes] = useState(false);
 
-  const [filterDates, setFilterDates] = useState([]);
+  const [filterDates, setFilterDates] = useState(null);
   const [filterCategories, setFilterCategories] = useState([]);
-
+  const [filterBanks, setFilterBanks] = useState([]);
 
   const [resetFilters, setResetFilters] = useState(false);
 
@@ -47,18 +48,43 @@ function Transactions() {
       });
     setUpdateIncomes(false);
     setUpdateOutcomes(false);
+
     setResetFilters(false);
   }, [token, updateIncomes, updateOutcomes, resetFilters]);
 
+  const formatDate = (value) => {
+    const year = value?.year();
+    const month = (value?.month() < 10 ? "0" : "") + (value?.month() + 1);
+    const date = (value?.date() < 10 ? "0" : "") + value?.date();
+
+    return Number(`${year}${month}${date}`);
+  };
+
   const handleFilter = () => {
-    const filteredTransactions = [];
-    transactions.forEach((t) => {
-      var tDate = t.add_date.split("-").reverse().join("");
-      if(filterCategories.find((c) => t.category === c) && tDate >= filterDates[0] && tDate <= filterDates[1])
-        filteredTransactions.push(t)
-    })
+    var filteredTransactions = transactions;
+
+    if (filterDates) {
+      const startDate = formatDate(filterDates[0]);
+      const endDate = formatDate(filterDates[1]);
+      filteredTransactions = filteredTransactions.filter((t) => {
+        const tDate = t.add_date.split("-").reverse().join("");
+        return tDate >= startDate && tDate <= endDate;
+      });
+    }
+
+    if (filterCategories[0]) {
+      filteredTransactions = filteredTransactions.filter((t) => {
+        return filterCategories.includes(t.category);
+      });
+    }
+
+    if (filterBanks[0]) {
+      filteredTransactions = filteredTransactions.filter((t) => {
+        return filterBanks.includes(t.bank_name);
+      });
+    }
     setTransactions(filteredTransactions);
-  }
+  };
 
   return (
     <div className="flex bg-emerald-100 overflow-x-hidden">
@@ -100,10 +126,29 @@ function Transactions() {
             />
           </section>
           <div className="flex items-end">
-            <DateFilter setDates={setFilterDates} />
-            <CategoryFilter setCategories={setFilterCategories}/>
-            <button className="bg-blue-400 p-2 rounded-md" onClick={() => handleFilter()}>Reset Filters</button>
-            <button className="bg-orange-400 p-2 rounded-md" onClick={() => setResetFilters(true)}>Reset Filters</button>
+            <DateFilter setDates={setFilterDates} values={filterDates} />
+            <CategoryFilter
+              setCategories={setFilterCategories}
+              values={filterCategories}
+            />
+            <BanksFilter setBankList={setFilterBanks} values={filterBanks} />
+            <button
+              className="bg-blue-400 p-2 rounded-md"
+              onClick={() => handleFilter()}
+            >
+              <FaSearch size={25} color="white" />
+            </button>
+            <button
+              className="bg-orange-400 p-2 rounded-md"
+              onClick={() => {
+                setResetFilters(true);
+                setFilterDates(null);
+                setFilterCategories([]);
+                setFilterBanks([]);
+              }}
+            >
+              Reset Filters
+            </button>
           </div>
           <div className="flex flex-row justify-start flex-wrap gap-3">
             {transactions.map((transaction) => (
