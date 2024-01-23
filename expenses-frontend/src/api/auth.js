@@ -38,10 +38,12 @@ const registerService = (email, name, password) => {
     axios
       .post(baseURL + "/register", data)
       .then((response) => {
-        resolve();
+        resolve(response.data.message);
+        toast.success(response.data.message);
       })
       .catch((error) => {
         reject(error.response.data.message);
+        toast.error(error.response.data.message);
       });
   });
 };

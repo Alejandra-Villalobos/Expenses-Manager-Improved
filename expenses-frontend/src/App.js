@@ -6,12 +6,14 @@ import Home from "./pages/Home";
 import Banks from "./pages/Banks";
 import Transactions from "./pages/Transactions";
 import Statistics from "./pages/Statistics";
+import Register from "./pages/Register";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
         <Route index element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route
           path="/home"
           element={
