@@ -1,0 +1,52 @@
+version: '3.8'
+
+# Services
+services:
+  # Server service
+  server:
+    build:
+      context: ./expenses-backend
+      dockerfile: Dockerfile
+    container_name: expenses_backend
+    ports:
+      - "8080:8080"
+    env_file: ./.env
+    environment:
+      - DB_HOST=expenses_postgres_server
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_NAME=$DB_DATABASE
+      - DB_PORT=$DB_PORT
+    depends_on:
+      - postgres
+
+  # Client service
+  client:
+    build:
+      context: ./expenses-frontend
+      dockerfile: Dockerfile
+
+    container_name: expenses_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+
+  postgres:
+    image: postgres:latest
+    container_name: expenses_postgres_server
+
+    env_file: ./.env
+    environment:
+      - POSTGRES_DB=$DB_DATABASE
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./mydata:/var/lib/postgresql/data 
+      - ./init-scripts:/docker-entrypoint-initdb.d
+
+volumes: 
+  mydata:
