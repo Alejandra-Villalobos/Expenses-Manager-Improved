@@ -20,7 +20,6 @@ function Login() {
   const handleLogin = async (e) => {
     try {
       const userInfo = await loginService(email, password);
-      console.log(userInfo);
       setUser(userInfo);
       navigate("/home");
     } catch (error) {

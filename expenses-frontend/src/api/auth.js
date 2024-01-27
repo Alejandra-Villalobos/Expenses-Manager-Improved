@@ -39,7 +39,6 @@ const registerService = (email, name, password) => {
       .post(baseURL + "/register", data)
       .then((response) => {
         resolve(response.data.message);
-        toast.success(response.data.message);
       })
       .catch((error) => {
         reject(error.response.data.message);

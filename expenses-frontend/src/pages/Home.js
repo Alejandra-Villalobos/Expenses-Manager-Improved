@@ -7,6 +7,7 @@ import BankCard from "../components/BankCard";
 import { getIncomesService } from "../api/income";
 import { getOutcomesService } from "../api/outcome";
 import TransactionCard from "../components/TransactionCard";
+import NoData from "../components/NoData";
 
 function Home() {
   const { user } = useAuth();
@@ -15,10 +16,17 @@ function Home() {
   const [menuWidth, setMenuWidth] = useState(0);
 
   const [banks, setBanks] = useState([]);
+  const [noDataBanks, setNoDataBanks] = useState(false);
+
   var [transactions, setTransactions] = useState([]);
+  const [noDataTransactions, setNoDataTransactions] = useState(false);
+
 
   useEffect(() => {
-    getBanksService(token).then((data) => setBanks(data));
+    getBanksService(token).then((data) => {
+      setBanks(data);
+      if (data.length === 0) setNoDataBanks(true);
+    });
 
     Promise.all([getIncomesService(token), getOutcomesService(token)])
       .then(([incomes, outcomes]) => {
@@ -28,6 +36,7 @@ function Home() {
             bb = t2.add_date.split("-").reverse().join();
           return aa > bb ? -1 : aa < bb ? 1 : 0;
         });
+        if(allTransactions.length === 0) setNoDataTransactions(true)
         setTransactions(allTransactions);
       })
       .catch((error) => {
@@ -46,6 +55,7 @@ function Home() {
         <section className="w-full flex items-center flex-col">
           <h2 className="text-center font-bold text-2xl p-4">Bank Accounts</h2>
           <div className="flex gap-4 flex-wrap">
+            {noDataBanks && <NoData/>}
             {banks.map((bank) => (
               <BankCard
                 key={bank.bank_id}
@@ -59,9 +69,10 @@ function Home() {
             ))}
           </div>
         </section>
-        <section className="w-full mx-4 flex items-center flex-col">
+        <section className="w-full flex items-center flex-col">
           <h2 className="text-center font-bold text-2xl p-4">Transactions</h2>
           <div className="flex flex-row justify-start flex-wrap gap-3">
+          {noDataTransactions && <NoData/>}
             {transactions.map((transaction) => (
               <TransactionCard
                 key={transaction.income_id || transaction.outcome_id}

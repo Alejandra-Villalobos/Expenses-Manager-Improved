@@ -14,6 +14,7 @@ import AddOutcome from "../components/forms/AddOutcome";
 import DateFilter from "../components/filters/DateFilter";
 import CategoryFilter from "../components/filters/CategoryFilter";
 import BanksFilter from "../components/filters/BanksFilter";
+import NoData from "../components/NoData";
 
 function Transactions() {
   const { user } = useAuth();
@@ -25,6 +26,8 @@ function Transactions() {
   const [showOutcomeForm, setShowOutcomeForm] = useState(false);
 
   var [transactions, setTransactions] = useState([]);
+  const [noData, setNoData] = useState(false);
+
   const [updateIncomes, setUpdateIncomes] = useState(false);
   const [updateOutcomes, setUpdateOutcomes] = useState(false);
 
@@ -43,6 +46,7 @@ function Transactions() {
             bb = t2.add_date.split("-").reverse().join();
           return aa > bb ? -1 : aa < bb ? 1 : 0;
         });
+        allTransactions.length === 0 ? setNoData(true) : setNoData(false);
         setTransactions(allTransactions);
       })
       .catch((error) => {
@@ -85,6 +89,7 @@ function Transactions() {
         return filterBanks.includes(t.bank_name);
       });
     }
+    filteredTransactions.length === 0 ? setNoData(true) : setNoData(false);
     setTransactions(filteredTransactions);
   };
 
@@ -139,7 +144,11 @@ function Transactions() {
               className="bg-blue-400 p-2 rounded-md"
               onClick={() => handleFilter()}
             >
-              <IoSearch className="hover:scale-125 transition-all ease-in-out" size={25} color="white" />
+              <IoSearch
+                className="hover:scale-125 transition-all ease-in-out"
+                size={25}
+                color="white"
+              />
             </button>
             <button
               className="bg-orange-400 p-2 rounded-md"
@@ -150,11 +159,21 @@ function Transactions() {
                 setFilterBanks([]);
               }}
             >
-              <GrPowerReset className=" hover:rotate-180 transition-all ease-in-out" size={25} color="white"/>
+              <GrPowerReset
+                className=" hover:rotate-180 transition-all ease-in-out"
+                size={25}
+                color="white"
+              />
             </button>
           </div>
 
           <div className="flex flex-row justify-start flex-wrap gap-3 mt-8 px-4">
+            {noData && (
+              <div className="flex justify-center w-full">
+                {" "}
+                <NoData />{" "}
+              </div>
+            )}
             {transactions.map((transaction) => (
               <TransactionCard
                 key={transaction.income_id || transaction.outcome_id}

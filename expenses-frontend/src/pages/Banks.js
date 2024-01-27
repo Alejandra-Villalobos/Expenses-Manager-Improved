@@ -8,6 +8,7 @@ import AddBank from "../components/forms/AddBank";
 import { useAuth } from "../context/AuthContext";
 import { getBanksService } from "../api/bank";
 import BankCard from "../components/BankCard";
+import NoData from "../components/NoData";
 
 function Banks() {
   const { user } = useAuth();
@@ -17,11 +18,15 @@ function Banks() {
 
   const [showBankForm, setShowBankForm] = useState(false);
   const [banks, setBanks] = useState([]);
+  const [noData, setNoData] = useState(false);
   const [updateBanks, setUpdateBanks] = useState(false);
 
   useEffect(() => {
-    getBanksService(token).then((data) => setBanks(data));
-    setUpdateBanks(false)
+    getBanksService(token).then((data) => {
+      setBanks(data);
+      data.length === 0 ? setNoData(true) : setNoData(false)
+    });
+    setUpdateBanks(false);
   }, [token, updateBanks]);
 
   return (
@@ -48,6 +53,7 @@ function Banks() {
             />
           </section>
           <div className="flex gap-4 justify-center flex-wrap">
+            {noData && <NoData /> }
             {banks.map((bank) => (
               <BankCard
                 key={bank.bank_id}

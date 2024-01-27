@@ -22,9 +22,10 @@ function Register() {
     }
     try {
       await registerService(email, name, password);
+      toast.success("User created!")
       setTimeout(() => {
         navigate("/");
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.error("Error de registro:", error);
     }
