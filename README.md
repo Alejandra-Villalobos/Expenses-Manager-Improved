@@ -54,7 +54,7 @@ Sign up with an email, name and password. Log in, create a bank account in the "
 
 [Version]: https://img.shields.io/badge/version-1.0.0-green.svg
 
-[Demo]: https://img.shields.io/badge/click_here-blue.svg
+[Demo]: https://img.shields.io/badge/demo-click_here-blue.svg
 [Demo-url]: https://expensesmanager.up.railway.app/
 
 [PostgreSQL]: https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white
