@@ -2,6 +2,15 @@
 
 ![Version] [![Demo]][Demo-url]
 
+<h2>Demo credentials (you can also create an account)</h2>
+<h3>User 1</h3>
+Email: test@test.com </br>
+Password: 12345678
+
+<h3>User 2</h3>
+Email: test2@test.com </br>
+Password: 12345678
+
 <h2>About this project</h2>
 Expenses manager is a web application to keep record of your bank accounts, incomes, outcomes and get graphics and statistics about your transactions. You can also record transactions to other accounts registered in the system, both your own and those of other users, automatically synchronizing the money in the accounts. This is mainly a practice project 
 
