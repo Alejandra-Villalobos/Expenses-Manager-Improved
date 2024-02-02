@@ -1,6 +1,6 @@
-<h1 align="center">Expenses Manager</h1>
+<h1 align="center"><a href="https://expensesmanager.up.railway.app/" target="_blank" rel="noopener noreferrer">Expenses Manager</a></h1>
 
-![Version] ![Demo]
+![Version] [![Demo]][Demo-url]
 
 <h2>About this project</h2>
 Expenses manager is a web application to keep record of your bank accounts, incomes, outcomes and get graphics and statistics about your transactions. You can also record transactions to other accounts registered in the system, both your own and those of other users, automatically synchronizing the money in the accounts. This is mainly a practice project 
@@ -45,7 +45,8 @@ Sign up with an email, name and password. Log in, create a bank account in the "
 
 [Version]: https://img.shields.io/badge/version-1.0.0-green.svg
 
-[Demo]: https://img.shields.io/badge/demo-comming_soon!-blue.svg
+[Demo]: https://img.shields.io/badge/click_here-blue.svg
+[Demo-url]: https://expensesmanager.up.railway.app/
 
 [PostgreSQL]: https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white
 [PostgreSQL-url]: https://www.postgresql.org/
